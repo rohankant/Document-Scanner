@@ -1,15 +1,16 @@
+import re
 import pytesseract
-import PIL
-
 from pdf2image import convert_from_path
-import glob
 
-pdfs = glob.glob(r"PdfFile\*.pdf")
-for pdf_path in pdfs:
-    pages = convert_from_path(pdf_path, 500)
+# Convert the PDF file to images
+images = convert_from_path("PdfFile.pdf")
 
-    for pageNum,imgBlob in enumerate(pages):
-        text = pytesseract.image_to_string(imgBlob,lang='eng')
+# Scan each image
+for image in images:
 
-        with open(f'{pdf_path[:-4]}_page_{pageNum}.txt', 'w') as the_file:
-            the_file.write(text)
+    # Convert the image to text
+    text = pytesseract.image_to_string(image)
+    
+    # Split the text into individual words
+    words = text.split()
+    print(text)
